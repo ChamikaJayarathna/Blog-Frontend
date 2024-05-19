@@ -1,6 +1,6 @@
-import React from 'react';
-import { Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Alert, Button, Spinner } from 'react-bootstrap';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Logo = styled.span`
@@ -54,6 +54,44 @@ const SubmitButton = styled(Button)`
 `;
 
 const SignUp = () => {
+
+  const [formData, setFormData] = useState({});
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFormData({...formData, [e.target.id]: e.target.value.trim()});
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if(!formData.username || !formData.email || !formData.password){
+      return setErrorMessage('Please fill out all fields.');
+    }
+
+    try {
+      setLoading(true);
+      setErrorMessage(null);
+      const res = await fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if(data.success === false){
+        return setErrorMessage(data.message);
+      }
+      setLoading(false);
+      if(res.ok){
+        navigate('/sign-in')
+      }
+    } catch (error) {
+      setErrorMessage(error.message);
+      setLoading(false);
+    }
+  };
+
   return (
     <div className='min-vh-100 mt-5 d-flex justify-content-center'>
       <CustomDiv>
@@ -68,7 +106,7 @@ const SignUp = () => {
 
         {/* right side */}
         <RightSide>
-          <form className='d-flex flex-column'>
+          <form className='d-flex flex-column' onSubmit={handleSubmit}>
             <Ldiv>
               <label htmlFor='username' className='form-label'>Your username</label>
               <input
@@ -76,6 +114,7 @@ const SignUp = () => {
                 className='form-control'
                 placeholder='Username'
                 id='username'
+                onChange={handleChange}
               />
             </Ldiv>
 
@@ -86,6 +125,7 @@ const SignUp = () => {
                 className='form-control'
                 placeholder='name@company.com'
                 id='email'
+                onChange={handleChange}
               />
             </Ldiv>
 
@@ -96,11 +136,19 @@ const SignUp = () => {
                 className='form-control'
                 placeholder='Password'
                 id='password'
+                onChange={handleChange}
               />
             </Ldiv>
 
-            <SubmitButton type="submit" className='mt-4'>
-              Sign Up
+            <SubmitButton type="submit" className='mt-4' disabled={loading}>
+              {
+                loading ? (
+                  <>
+                    <Spinner animation="border" size='sm'/>
+                    <span className='pl-3'>Loading...</span>
+                  </>
+                ) : 'Sign Up'
+              }
             </SubmitButton>
           </form>
           
@@ -108,6 +156,13 @@ const SignUp = () => {
             <span>Have an account? </span>
             <Link to='/sign-in' className='text-primary'>Sign In</Link>
           </div>
+          {
+            errorMessage && (
+              <Alert variant='danger' className='mt-4'>
+                {errorMessage}
+              </Alert>
+            )
+          }
         </RightSide>
       </CustomDiv>
     </div>
