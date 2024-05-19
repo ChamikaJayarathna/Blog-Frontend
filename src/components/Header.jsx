@@ -11,7 +11,8 @@ import { FaMoon } from 'react-icons/fa';
 import { AiOutlineSearch } from 'react-icons/ai';
 
 const Logo = styled.span`
-    background: linear-gradient(to right, #6366f1, #a855f7, #ec4899);   
+    background: linear-gradient(to right, #6366f1, #a855f7, #ec4899);  
+    border-radius: 8px;
 `;
 
 const StyledNavbar = styled(Navbar)`
