@@ -33,7 +33,7 @@ const Header = () => {
         </Logo>
 
         <form className='d-none d-lg-inline'>
-            <input type="text" placeholder="search course..." />
+            <input type="text" placeholder="search..." />
             <button><FaSearch/></button>
         </form>
 
