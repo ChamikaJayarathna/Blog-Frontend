@@ -1,8 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
-import { Navbar } from 'react-bootstrap'
+import { Dropdown, Navbar, Image } from 'react-bootstrap'
 import styled from 'styled-components';
 import { FaSearch, FaMoon } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
 
 
 const StyledNavbar = styled(Navbar)`
@@ -25,7 +26,34 @@ const LogoName = styled.span`
     color: white;
 `;
 
+const Avatar = styled(Image)`
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+`;
+
+const DropdownHeader = styled.div`
+  padding: 10px;
+
+  .username {
+    display: block;
+    font-size: 0.875rem;
+  }
+
+  .email {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+`;
+
 const Header = () => {
+
+    const { currentUser } = useSelector((state) => state.user);
+
   return (
     <StyledNavbar>
         <Logo to='/' className='align-self-center text-nowrap fw-bolder'>
@@ -44,9 +72,31 @@ const Header = () => {
             <div className="">
                 <button className='d-none d-sm-inline'><FaMoon/></button>
 
-                <Link to='/sign-in'>
-                    <button>Sign In</button>
-                </Link>
+                {currentUser ? (
+                    <Dropdown>
+                        <Dropdown.Toggle as="div" id="dropdown-custom-components">
+                            <Avatar src={currentUser.profilePicture} alt="user" />
+                        </Dropdown.Toggle>
+                        
+                        <Dropdown.Menu>
+
+                            <DropdownHeader>
+                                <span className="username">@{currentUser.username}</span>
+                                <span className="email">{currentUser.email}</span>
+                            </DropdownHeader>
+
+                            <Dropdown.Item as={Link} to='/dashboard?tab=profile'>Profile</Dropdown.Item>
+                            <Dropdown.Item>Sign Out</Dropdown.Item>
+
+                        </Dropdown.Menu>
+                    </Dropdown>
+                ):
+                (
+                    <Link to='/sign-in'>
+                        <button>Sign In</button>
+                    </Link>
+                )}
+
             </div>
             
             <ul className="navbar-nav">
