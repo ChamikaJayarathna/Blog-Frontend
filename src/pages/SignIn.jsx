@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { signInStart, signInSuccess, signInFailure } from '../redux/user/userSlice';
+import OAuth from '../components/OAuth';
 
 const Logo = styled.span`
     background: linear-gradient(to right, #6366f1, #a855f7, #ec4899);   
@@ -142,6 +143,7 @@ const SignIn = () => {
                 ) : 'Sign In'
               }
             </SubmitButton>
+            <OAuth/>
           </form>
           
           <div className="d-flex gap-1 fs-6 mt-2">
