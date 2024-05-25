@@ -55,6 +55,10 @@ const DropdownHeader = styled.div`
   }
 `;
 
+const List = styled(Link)`
+    color: ${({ theme }) => theme === 'dark' ? '#FFFFFF' : 'black'};
+`;
+
 const Header = () => {
 
     const dispatch = useDispatch();
@@ -111,13 +115,13 @@ const Header = () => {
             
             <ul className="navbar-nav">
                 <li className="nav-item">
-                    <Link to='/' className="nav-link">Home</Link>
+                    <List to='/' className="nav-link" theme={theme}>Home</List>
                 </li>
                 <li className="nav-item">
-                    <Link to='/about' className="nav-link">About</Link>
+                    <List to='/about' className="nav-link" theme={theme}>About</List>
                 </li>   
                 <li className="nav-item">
-                    <Link to='/projects' className="nav-link">Projects</Link>
+                    <List to='/projects' className="nav-link" theme={theme}>Projects</List>
                 </li>   
             </ul>
 
