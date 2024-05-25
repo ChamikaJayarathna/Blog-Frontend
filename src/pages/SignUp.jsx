@@ -3,6 +3,7 @@ import { Alert, Button, Spinner } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import OAuth from '../components/OAuth';
+import { useSelector } from 'react-redux';
 
 const Logo = styled.span`
     background: linear-gradient(to right, #6366f1, #a855f7, #ec4899);   
@@ -11,7 +12,7 @@ const Logo = styled.span`
 `;
 
 const Blog = styled.span`
-  color: black;
+  color: ${({ theme }) => theme === 'dark' ? '#FFFFFF' : 'black'};
 `;
 
 const CustomLink = styled(Link)`
@@ -60,6 +61,7 @@ const SignUp = () => {
   const [errorMessage, setErrorMessage] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { theme } = useSelector(state => state.theme);
 
   const handleChange = (e) => {
     setFormData({...formData, [e.target.id]: e.target.value.trim()});
@@ -100,7 +102,7 @@ const SignUp = () => {
         <LeftSide>
           <CustomLink to="/">
             <Logo>Sahand's</Logo>
-            <Blog>Blog</Blog>
+            <Blog theme={theme}>Blog</Blog>
           </CustomLink>
           <p className='fs-6 mt-3'>This is a demo project. You can sign up with your email and password or with Google.</p>
         </LeftSide>

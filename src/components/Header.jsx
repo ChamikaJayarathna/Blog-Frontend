@@ -2,8 +2,9 @@ import React from 'react'
 import { Link } from 'react-router-dom';
 import { Dropdown, Navbar, Image } from 'react-bootstrap'
 import styled from 'styled-components';
-import { FaSearch, FaMoon } from 'react-icons/fa';
-import { useSelector } from 'react-redux';
+import { FaSearch, FaMoon, FaSun } from 'react-icons/fa';
+import { useSelector, useDispatch } from 'react-redux';
+import { toggleTheme } from '../redux/theme/themeSlice';
 
 
 const StyledNavbar = styled(Navbar)`
@@ -24,6 +25,10 @@ const LogoName = styled.span`
     border-radius: 9px;
     padding: .5rem 1rem;
     color: white;
+`;
+
+const Blog = styled.span`
+  color: ${({ theme }) => theme === 'dark' ? '#FFFFFF' : 'black'};
 `;
 
 const Avatar = styled(Image)`
@@ -52,12 +57,15 @@ const DropdownHeader = styled.div`
 
 const Header = () => {
 
+    const dispatch = useDispatch();
     const { currentUser } = useSelector((state) => state.user);
+    const { theme } = useSelector((state) => state.theme);
 
   return (
     <StyledNavbar>
         <Logo to='/' className='align-self-center text-nowrap fw-bolder'>
-            <LogoName>Sahand's</LogoName>Blog
+            <LogoName>Sahand's</LogoName>
+            <Blog theme={theme}>Blog</Blog>
         </Logo>
 
         <form className='d-none d-lg-inline'>
@@ -70,7 +78,9 @@ const Header = () => {
         <div className='d-flex gap-3 flex-md-row-reverse'>
 
             <div className="">
-                <button className='d-none d-sm-inline'><FaMoon/></button>
+                <button className='d-none d-sm-inline' onClick={() => dispatch(toggleTheme())}>
+                    { theme === 'light' ? <FaSun/> : <FaMoon/> }
+                </button>
 
                 {currentUser ? (
                     <Dropdown>

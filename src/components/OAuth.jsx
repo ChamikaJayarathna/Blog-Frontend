@@ -4,21 +4,21 @@ import { Button } from 'react-bootstrap';
 import { AiFillGoogleCircle } from 'react-icons/ai';
 import { GoogleAuthProvider, signInWithPopup, getAuth } from 'firebase/auth';
 import { app } from '../firebase';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { signInSuccess } from '../redux/user/userSlice';
 import { useNavigate } from 'react-router-dom';
 
 const GoogleButton = styled(Button)`
-
-    background-color: white;
+    background-color: transparent;
     padding: 0.7rem 1rem;
     border: none;
-    color: black;
+    color: ${({ theme }) => theme === 'dark' ? '#FFFFFF' : 'black'};
     border-radius: 90px;
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
+    box-shadow: 0 0 0 2px #FF6F61, 0 0 0 3px #FFA500;
 
     &::after {
         content: '';
@@ -34,7 +34,9 @@ const GoogleButton = styled(Button)`
         z-index: 0;
         background-color: white;
     }
+    
 `;
+
 
 const GoogleIcon = styled(AiFillGoogleCircle)`
     width: 24px;
@@ -47,6 +49,7 @@ const OAuth = () => {
     const auth = getAuth(app);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { theme } = useSelector(state => state.theme);
 
     const handleGoogleClick = async() => {
         const provider = new GoogleAuthProvider()
@@ -77,7 +80,7 @@ const OAuth = () => {
     }
 
   return (
-    <GoogleButton className='mt-3' type='button' onClick={handleGoogleClick}>
+    <GoogleButton className='mt-3' type='button' onClick={handleGoogleClick} theme={theme}>
         <GoogleIcon/>Continue with Google
     </GoogleButton>
   )

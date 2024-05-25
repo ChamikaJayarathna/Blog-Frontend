@@ -13,7 +13,7 @@ const Logo = styled.span`
 `;
 
 const Blog = styled.span`
-  color: black;
+  color: ${({ theme }) => theme === 'dark' ? '#FFFFFF' : 'black'};
 `;
 
 const CustomLink = styled(Link)`
@@ -62,6 +62,7 @@ const SignIn = () => {
   const {loading, error: errorMessage} = useSelector(state => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { theme } = useSelector(state => state.theme);
 
 
   const handleChange = (e) => {
@@ -102,7 +103,7 @@ const SignIn = () => {
         <LeftSide>
           <CustomLink to="/">
             <Logo>Sahand's</Logo>
-            <Blog>Blog</Blog>
+            <Blog theme={theme}>Blog</Blog>
           </CustomLink>
           <p className='fs-6 mt-3'>This is a demo project. You can sign in with your email and password or with Google.</p>
         </LeftSide>
