@@ -2,69 +2,61 @@ import React, { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { HiArrowSmRight, HiUser } from 'react-icons/hi';
 import styled from 'styled-components';
-import { ListGroup } from 'react-bootstrap';
 
-const Sidebar = styled.div`
-  width: 250px;
-  background-color: pink;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
+const SidebarItem = styled.li`
+  :hover{
+    background-color: red;
+  }
 `;
 
-const SidebarItemGroup = styled(ListGroup)`
-  margin: 0;
-  padding: 0;
-  flex-grow: 1;
-`;
-
-const SidebarItem = styled(ListGroup.Item)`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  margin-top: 5px;
-
-  &.active {
-    background-color: #007bff;
-    color: white;
-  }
-
-  svg {
-    margin-right: 10px;
-  }
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: inherit;
 `;
 
 const DashSidebar = () => {
 
-    const location = useLocation();
-    const [tab, setTab] = useState('');
+  const location = useLocation();
+  const [tab, setTab] = useState('');
 
-    useEffect(() => {
-        const urlParams = new URLSearchParams(location.search);
-        const tabFromUrl = urlParams.get('tab');
-        if(tabFromUrl){
-        setTab(tabFromUrl);
-        }
-    },[location.search]);
+  useEffect(() => {
+      const urlParams = new URLSearchParams(location.search);
+      const tabFromUrl = urlParams.get('tab');
+      if(tabFromUrl){
+      setTab(tabFromUrl);
+      }
+  },[location.search]);
 
   return (
-    <Sidebar>
-        <SidebarItemGroup>
+    <div className='container-fluid m-0 p-0'>
+      <div className="row">
+        '<div className="bg-dark col-auto col-md-20 min-vh-100 d-flex justify-content-between flex-column">
+          <div className="">
+            <ul className='nav nav-pills flex-column mt-3 mt-sm-0'>
 
-            <Link to='/dashboard?tab=profile'>
-                <SidebarItem active={tab === 'profile'}> 
-                    <HiUser/>
-                    Profile
-                </SidebarItem>
-            </Link>
-            
+              <StyledLink to='/dashboard?tab=profile'>
+                <SidebarItem className="nav-item text-white fs-4 my-1 py-2 py-sm-0 mt-3">
+                    <a href="#" className='nav-link text-white fs-5' aria-current="page">
+                      <HiUser/>
+                      <span className='ms-3 d-none d-sm-inline'>Profile</span>
+                    </a>
+                  </SidebarItem>
+              </StyledLink>
+              
 
-            <SidebarItem>
-                <HiArrowSmRight/>
-                Sign Out
-            </SidebarItem>
-        </SidebarItemGroup>
-    </Sidebar>
+              <SidebarItem className="nav-item text-white fs-4 my-1 py-2 py-sm-0">
+                <a href="#" className='nav-link text-white fs-5' aria-current="page">
+                  <HiArrowSmRight/>
+                  <span className='ms-3 d-none d-sm-inline'>Sign Out</span>
+                </a>
+              </SidebarItem>
+
+            </ul>
+          </div>
+        
+        </div>
+      </div>
+    </div>
   )
 }
 
