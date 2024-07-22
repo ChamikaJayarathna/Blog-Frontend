@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link as RouterLink } from 'react-router-dom';
-import { RxDashboard } from "react-icons/rx";
+import { HiArrowSmRight, HiUser } from 'react-icons/hi';
 import { IoIosArrowForward } from "react-icons/io";
 import { useSelector } from 'react-redux';
 
@@ -111,12 +111,21 @@ const DashSidebar = () => {
           <ToggleButton close={isSidebarClosed} darkMode={isDarkMode} onClick={toggleSidebar} />
           <MenuBar>
             <MenuLinks>
+
               <NavLink darkMode={isDarkMode}>
                 <Link darkMode={isDarkMode} close={isSidebarClosed}>
-                  <RxDashboard className='icon'/>
-                  <span className="text nav-text">Dashboard</span>
+                  <HiUser className='icon'/>
+                  <span className="text nav-text">Profile</span>
                 </Link>
               </NavLink>
+
+              <NavLink darkMode={isDarkMode}>
+                <Link darkMode={isDarkMode} close={isSidebarClosed}>
+                  <HiArrowSmRight className='icon'/>
+                  <span className="text nav-text">Sign Out</span>
+                </Link>
+              </NavLink>
+
             </MenuLinks>
           </MenuBar>
         </SidebarContainer>
