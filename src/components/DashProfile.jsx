@@ -12,13 +12,49 @@ const Card = styled.div`
   padding: 2rem;
   border-radius: 0.5rem;
   box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
+
+  @media (max-width: 768px){
+    width: 90%;
+    padding: 1rem;
+  }
+
+  @media (max-width: 480px) {
+    width: 100%;
+    padding: 0.5rem;
+  }
+
+
 `;
 
 const Imgdiv = styled.div`
   width: 8rem; 
   height: 8rem;
   position: relative;
+
+  @media (max-width: 480px) {
+    width: 6rem;
+    height: 6rem;
+  }
 `;
+
+const Button = styled.button`
+  width: 100%;
+  padding: 10px 0;
+  border: none;
+  background-color: #D74B1F;
+  color: #ffffff;
+  border-radius: 5px;
+
+  &:hover{
+    background-color: #eb592d;
+  }
+
+  @media (max-width: 480px) {
+    padding: 8px 0;
+  }
+`;
+
+
 
 
 
@@ -88,9 +124,6 @@ const DashProfile = () => {
     ); 
   }
 
-
-
-
   return (
     
     <div className="mt-5 mx-auto">
@@ -135,7 +168,7 @@ const DashProfile = () => {
           
           <input type="password" id="password" placeholder="password" className="form-control rounded mb-4" />
 
-          <button type="submit">Update</button>
+          <Button type="submit">Update</Button>
         </form>
 
         <div className="d-flex justify-content-between text-danger mt-3">
