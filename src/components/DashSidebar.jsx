@@ -113,7 +113,7 @@ const DashSidebar = () => {
             <MenuLinks>
 
               <NavLink darkMode={isDarkMode}>
-                <Link darkMode={isDarkMode} close={isSidebarClosed}>
+                <Link to='/dashboard?tab=profile' darkMode={isDarkMode} close={isSidebarClosed}>
                   <HiUser className='icon'/>
                   <span className="text nav-text">Profile</span>
                 </Link>
