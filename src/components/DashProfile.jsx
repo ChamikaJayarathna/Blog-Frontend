@@ -8,6 +8,7 @@ import 'react-circular-progressbar/dist/styles.css';
 import { updateStart, updateSuccess, updateFailure, deleteUserStart, deleteUserSuccess, deleteUserFailure, signoutSuccess } from '../redux/user/userSlice';
 import { Modal } from 'react-bootstrap';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
+import { Link } from 'react-router-dom';
 
 const Card = styled.div`
   width: 700px;
@@ -37,25 +38,9 @@ const Imgdiv = styled.div`
   }
 `;
 
-const Button = styled.button`
-  width: 100%;
-  padding: 10px 0;
-  border: none;
-  background-color: #D74B1F;
-  color: #ffffff;
-  border-radius: 5px;
-
-  &:hover{
-    background-color: #eb592d;
-  }
-
-  @media (max-width: 480px) {
-    padding: 8px 0;
-  }
-`;
 
 const DashProfile = () => {
-  const { currentUser, error } = useSelector((state) => state.user);
+  const { currentUser, error, loading } = useSelector((state) => state.user);
   const [imageFile, setImageFile] = useState(null);
   const [imageFileUrl, setImageFileUrl] = useState(null);
   const [imageFileUploadProgress, setImageFileUploadProgress] = useState(null);
@@ -267,7 +252,14 @@ const DashProfile = () => {
           
           <input type="password" id="password" placeholder="password" className="form-control rounded mb-4" onChange={handleChange} />
 
-          <Button type="submit">Update</Button>
+          <button type="submit" className='btn btn-danger w-100 p-2 border-0' disabled={loading || imageFileUploading}> {loading ? 'Loading...' : 'Update'} </button>
+          {
+            currentUser.isAdmin && (
+              <Link to={'/create-post'} className='w-100'>
+                <button type="button" className='btn btn-warning text-white w-100 p-2 border-0'>Create a post</button>
+              </Link>
+            )
+          }
         </form>
 
         <div className="d-flex justify-content-between text-danger mt-3">
