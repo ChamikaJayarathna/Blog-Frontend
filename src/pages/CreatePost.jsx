@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -26,7 +26,7 @@ const Border = styled.div`
 `;
 
 const ReactQuillStyled = styled(ReactQuill)`
-    height: 300px;
+    height: 400px;
 
     .ql-editor{
         font-size: 1.5rem;
@@ -44,6 +44,7 @@ const CreatePost = () => {
     const [imageUploadProgress, setImageUploadProgress] = useState(null);
     const [imageUploadError, setImageUploadError] = useState(null);
     const [formData, setFormData] = useState({});
+    const quillRef = useRef(null);
 
     const handleUploadImage = async ()=>{
         try {
@@ -82,6 +83,56 @@ const CreatePost = () => {
         }
     };
 
+    const handleImageUpload = () => {
+        const input = document.createElement('input');
+        input.setAttribute('type', 'file');
+        input.setAttribute('accept', 'image/*');
+        input.click();
+      
+        input.onchange = async () => {
+          const file = input.files[0];
+          if (file) {
+            const storage = getStorage(app);
+            const fileName = new Date().getTime() + '-' + file.name;
+            const storageRef = ref(storage, fileName);
+            const uploadTask = uploadBytesResumable(storageRef, file);
+      
+            uploadTask.on(
+              'state_changed',
+              null,
+              (error) => {
+                console.error('Image upload failed:', error);
+              },
+              async () => {
+                const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+                const quillEditor = quillRef.current.getEditor(); 
+                const range = quillEditor.getSelection();
+                quillEditor.insertEmbed(range.index, 'image', downloadURL);
+              }
+            );
+          }
+        };
+    };
+      
+
+    const modules = {
+        toolbar: {
+            container: [
+            [{ header: '1' }, { header: '2' }, { font: [] }],
+            [{ size: [] }],
+            ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+            [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
+            ['link', 'image'],
+            ['clean'],
+            ],
+            handlers: {
+            image: handleImageUpload,
+            },
+        },
+    };
+
+      
+
   return (
     <Container className="p-3 mx-auto min-vh-100">
       <h1 className="text-center fs-3 my-4 fw-semibold">Create a post</h1>
@@ -113,8 +164,18 @@ const CreatePost = () => {
             <img src={formData.image} alt="upload" className='w-100 h-75 object-cover'/>
         )}
 
-        <ReactQuillStyled theme="snow" placeholder='Write something...' className='mb-5' required/>
-         <button type="submit" className='btn btn-success p-2'>Publish</button>
+        <ReactQuillStyled
+            ref={quillRef}
+            theme="snow"
+            placeholder="Write something..."
+            required
+            modules={modules}
+            formats={[
+            'header', 'font', 'size', 'bold', 'italic', 'underline', 'strike', 'blockquote', 'list', 'bullet', 'indent', 'link', 'image',
+            ]}
+        />
+
+        <button type="submit" className='btn btn-success p-2 mt-5'>Publish</button>
       </form>
     </Container>
   );
