@@ -5,7 +5,10 @@ import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/
 import { app } from '../firebase';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import { updateStart, updateSuccess, updateFailure } from '../redux/user/userSlice';
+import { updateStart, updateSuccess, updateFailure, deleteUserStart, deleteUserSuccess, deleteUserFailure } from '../redux/user/userSlice';
+import { Modal } from 'react-bootstrap';
+import { HiOutlineExclamationCircle } from 'react-icons/hi';
+import { useNavigate } from 'react-router-dom';
 
 const Card = styled.div`
   width: 700px;
@@ -53,7 +56,7 @@ const Button = styled.button`
 `;
 
 const DashProfile = () => {
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser, error } = useSelector((state) => state.user);
   const [imageFile, setImageFile] = useState(null);
   const [imageFileUrl, setImageFileUrl] = useState(null);
   const [imageFileUploadProgress, setImageFileUploadProgress] = useState(null);
@@ -61,9 +64,11 @@ const DashProfile = () => {
   const [imageFileUploading, setImageFileUploading] = useState(false);
   const [updateUserSuccess, setUpdateUserSuccess] = useState(null);
   const [updateUserError, setUpdateUserError] = useState(null);
+  const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({});
   const filePickerRef = useRef();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -154,6 +159,53 @@ const DashProfile = () => {
     }
   };
 
+  const handleDeleteUser = async () =>{
+    setShowModal(false);
+    try {
+      dispatch(deleteUserStart());
+      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+        method: 'DELETE',
+      });
+      const data = await res.json();
+
+      if(!res.ok){
+        dispatch(deleteUserFailure(data.message));
+      }else{
+        dispatch(deleteUserFailure(error.message));
+        navigate('/sign-in');
+      }
+
+    } catch (error) {
+      dispatch(deleteUserFailure(error.message));
+    }
+  };
+
+
+  // const handleDeleteUser = async () => {
+  //   setShowModal(false);
+  //   try {
+  //     dispatch(deleteUserStart());
+  //     const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+  //       method: 'DELETE',
+  //       headers: {
+  //       },
+  //     });
+  //     const data = await res.json();
+  
+  //     if (!res.ok) {
+  //       console.error('Error deleting user:', data);
+  //       dispatch(deleteUserFailure(data.message || 'An error occurred while deleting your account'));
+  //     } else {
+  //       console.log('User deleted successfully');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error deleting user:', error);
+  //     dispatch(deleteUserFailure(error.message));
+  //   }
+  // };
+  
+  
+
   return (
     <div className="mt-5 mx-auto">
       <Card className='card'>
@@ -201,7 +253,7 @@ const DashProfile = () => {
         </form>
 
         <div className="d-flex justify-content-between text-danger mt-3">
-          <span className="cursor-pointer">Delete Account</span>
+          <span onClick={() => setShowModal(true)} className="cursor-pointer">Delete Account</span>
           <span className="cursor-pointer">Sign Out</span>
         </div>
       </Card>
@@ -210,11 +262,28 @@ const DashProfile = () => {
           {updateUserSuccess}
         </div>
       )}
-      {updateUserError && (
+      {error && (
         <div className="alert alert-danger mt-4" role="alert">
-          {updateUserError}
+          {error}
         </div>
       )}
+      <Modal show={showModal} onHide={() => setShowModal(false)} size="md" centered>
+        <Modal.Header closeButton className='border-0' />
+        <Modal.Body>
+          <div className="text-center">
+            <HiOutlineExclamationCircle className='h-25 w-25 text-secondary mb-4 mx-auto'/>
+            <h3 className='mb-5 text-secondary'>Are you sure you want to delete your account?</h3>
+            <div className="d-flex justify-content-center gap-4">
+              <button className='btn btn-danger' onClick={handleDeleteUser}>
+                Yes, I'm sure
+              </button>
+              <button className='btn btn-secondary' onClick={() => setShowModal(false)}>
+                No, cancle
+              </button>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 }
