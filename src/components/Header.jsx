@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { FaSearch, FaMoon, FaSun, FaBars } from 'react-icons/fa';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleTheme } from '../redux/theme/themeSlice';
+import { signoutSuccess } from '../redux/user/userSlice';
 
 const HeaderContainer = styled.header`
     margin: 0;
@@ -187,12 +188,30 @@ const DropdownHeader = styled.div`
 const Header = () => {
     const [isOpen, setIsOpen] = useState(false);
 
-    const dispatch = useDispatch();
     const { currentUser } = useSelector((state) => state.user);
     const { theme } = useSelector((state) => state.theme);
+    const dispatch = useDispatch();
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
+    };
+
+    const handleSignout = async () =>{
+        try {
+            const res = await fetch ('/api/user/signout', {
+            method: 'POST',
+            });
+            const data = await res.json();
+
+            if(!res.ok){
+            console.log(data.message);
+            }else{
+            dispatch(signoutSuccess());
+            }
+
+        } catch (error) {
+            console.log(error.message);
+        }
     };
 
     return (
@@ -235,7 +254,7 @@ const Header = () => {
                                     </DropdownHeader>
 
                                     <Dropdown.Item as={Link} to='/dashboard?tab=profile'>Profile</Dropdown.Item>
-                                    <Dropdown.Item>Sign Out</Dropdown.Item>
+                                    <Dropdown.Item onClick={handleSignout}>Sign Out</Dropdown.Item>
                                 </Dropdown.Menu>
                             </Dropdown>
                             ):

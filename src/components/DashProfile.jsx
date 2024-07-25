@@ -5,10 +5,9 @@ import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/
 import { app } from '../firebase';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import { updateStart, updateSuccess, updateFailure, deleteUserStart, deleteUserSuccess, deleteUserFailure } from '../redux/user/userSlice';
+import { updateStart, updateSuccess, updateFailure, deleteUserStart, deleteUserSuccess, deleteUserFailure, signoutSuccess } from '../redux/user/userSlice';
 import { Modal } from 'react-bootstrap';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
-import { useNavigate } from 'react-router-dom';
 
 const Card = styled.div`
   width: 700px;
@@ -68,7 +67,6 @@ const DashProfile = () => {
   const [formData, setFormData] = useState({});
   const filePickerRef = useRef();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -171,8 +169,7 @@ const DashProfile = () => {
       if(!res.ok){
         dispatch(deleteUserFailure(data.message));
       }else{
-        dispatch(deleteUserFailure(error.message));
-        navigate('/sign-in');
+        dispatch(deleteUserSuccess(data));
       }
 
     } catch (error) {
@@ -203,6 +200,27 @@ const DashProfile = () => {
   //     dispatch(deleteUserFailure(error.message));
   //   }
   // };
+
+
+
+  const handleSignout = async () =>{
+
+    try {
+      const res = await fetch ('/api/user/signout', {
+        method: 'POST',
+      });
+      const data = await res.json();
+
+      if(!res.ok){
+        console.log(data.message);
+      }else{
+        dispatch(signoutSuccess());
+      }
+
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
   
   
 
@@ -254,7 +272,7 @@ const DashProfile = () => {
 
         <div className="d-flex justify-content-between text-danger mt-3">
           <span onClick={() => setShowModal(true)} className="cursor-pointer">Delete Account</span>
-          <span className="cursor-pointer">Sign Out</span>
+          <span onClick={handleSignout} className="cursor-pointer">Sign Out</span>
         </div>
       </Card>
       {updateUserSuccess && (

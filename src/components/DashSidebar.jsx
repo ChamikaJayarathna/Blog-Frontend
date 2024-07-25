@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import { Link as RouterLink } from 'react-router-dom';
 import { HiArrowSmRight, HiUser } from 'react-icons/hi';
 import { IoIosArrowForward } from "react-icons/io";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { signoutSuccess } from '../redux/user/userSlice';
 
 const Container = styled.div`
   height: 100vh;
@@ -99,10 +100,29 @@ const Link = styled(RouterLink)`
 const DashSidebar = () => {
   const [isSidebarClosed, setSidebarClosed] = useState(true); 
   const isDarkMode = useSelector((state) => state.theme.theme === 'dark');
+  const dispatch = useDispatch();
 
   const toggleSidebar = () => {
     setSidebarClosed(prevState => !prevState); 
   };
+
+  const handleSignout = async () =>{
+    try {
+        const res = await fetch ('/api/user/signout', {
+        method: 'POST',
+        });
+        const data = await res.json();
+
+        if(!res.ok){
+        console.log(data.message);
+        }else{
+        dispatch(signoutSuccess());
+        }
+
+    } catch (error) {
+        console.log(error.message);
+    }
+};
 
   return (
     <div>
@@ -122,7 +142,7 @@ const DashSidebar = () => {
               <NavLink darkMode={isDarkMode}>
                 <Link darkMode={isDarkMode} close={isSidebarClosed}>
                   <HiArrowSmRight className='icon'/>
-                  <span className="text nav-text">Sign Out</span>
+                  <span onClick={handleSignout} className="text nav-text">Sign Out</span>
                 </Link>
               </NavLink>
 
