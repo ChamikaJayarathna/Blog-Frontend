@@ -6,6 +6,7 @@ import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/
 import { app } from '../firebase';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
     max-width: 600px;
@@ -26,7 +27,8 @@ const Border = styled.div`
 `;
 
 const ReactQuillStyled = styled(ReactQuill)`
-    height: 400px;
+    height: 100%;
+    width: 100%;
 
     .ql-editor{
         font-size: 1.5rem;
@@ -44,7 +46,10 @@ const CreatePost = () => {
     const [imageUploadProgress, setImageUploadProgress] = useState(null);
     const [imageUploadError, setImageUploadError] = useState(null);
     const [formData, setFormData] = useState({});
+    const [publishError, setPublishError] = useState(null);
     const quillRef = useRef(null);
+
+    const navigate = useNavigate();
 
     const handleUploadImage = async ()=>{
         try {
@@ -83,38 +88,6 @@ const CreatePost = () => {
         }
     };
 
-    const handleImageUpload = () => {
-        const input = document.createElement('input');
-        input.setAttribute('type', 'file');
-        input.setAttribute('accept', 'image/*');
-        input.click();
-      
-        input.onchange = async () => {
-          const file = input.files[0];
-          if (file) {
-            const storage = getStorage(app);
-            const fileName = new Date().getTime() + '-' + file.name;
-            const storageRef = ref(storage, fileName);
-            const uploadTask = uploadBytesResumable(storageRef, file);
-      
-            uploadTask.on(
-              'state_changed',
-              null,
-              (error) => {
-                console.error('Image upload failed:', error);
-              },
-              async () => {
-                const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-                const quillEditor = quillRef.current.getEditor(); 
-                const range = quillEditor.getSelection();
-                quillEditor.insertEmbed(range.index, 'image', downloadURL);
-              }
-            );
-          }
-        };
-    };
-      
-
     const modules = {
         toolbar: {
             container: [
@@ -125,22 +98,47 @@ const CreatePost = () => {
             ['link', 'image'],
             ['clean'],
             ],
-            handlers: {
-            image: handleImageUpload,
-            },
         },
     };
 
-      
+    const formats = [
+        'header', 'font', 'size', 'bold', 'italic', 'underline', 'strike', 'blockquote', 'list', 'bullet', 'indent', 'link', 'image',
+    ];
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const res = await fetch('/api/post/create',{
+                method: 'POST',
+                headers:{
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+            const data = await res.json();
+            if(!res.ok){
+                setPublishError(data.message);
+                return;
+            }
+            if(res.ok){
+                setPublishError(null);
+                navigate(`/post/${data.slug}`);
+            }
+        } catch (error) {
+            setPublishError('Something went wrong');
+        }
+    };
 
   return (
     <Container className="p-3 mx-auto min-vh-100">
       <h1 className="text-center fs-3 my-4 fw-semibold">Create a post</h1>
 
-      <form className="d-flex flex-column gap-4">
+      <form className="d-flex flex-column gap-4" onSubmit={handleSubmit}>
         <div className="d-flex">
-          <Title type="text" id="title" placeholder="Title" required className="form-control p-2 mx-auto"/>
-          <CategorySelect className='form-select' name="" id="">
+          <Title type="text" id="title" placeholder="Title" required className="form-control p-2 mx-auto" onChange={(e) => {
+            setFormData({...formData, title: e.target.value})
+          }}/>
+          <CategorySelect className='form-select' name="" id="" onChange={(e) => setFormData({...formData, category: e.target.value})}>
             <option selected value="uncategorized">Category</option>
             <option value="javascript">JavaScript</option>
             <option value="reactjs">Ract.js</option>
@@ -170,12 +168,15 @@ const CreatePost = () => {
             placeholder="Write something..."
             required
             modules={modules}
-            formats={[
-            'header', 'font', 'size', 'bold', 'italic', 'underline', 'strike', 'blockquote', 'list', 'bullet', 'indent', 'link', 'image',
-            ]}
+            onChange={(value) => {
+                setFormData({...formData, content: value});
+            }}
         />
 
         <button type="submit" className='btn btn-success p-2 mt-5'>Publish</button>
+        {publishError && 
+            <div className="alert alert-danger mt-4" role="alert">{publishError}</div> 
+        }
       </form>
     </Container>
   );
