@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link as RouterLink } from 'react-router-dom';
-import { HiArrowSmRight, HiUser } from 'react-icons/hi';
+import { HiArrowSmRight, HiDocumentText, HiUser } from 'react-icons/hi';
 import { IoIosArrowForward } from "react-icons/io";
 import { useSelector, useDispatch } from 'react-redux';
 import { signoutSuccess } from '../redux/user/userSlice';
@@ -101,6 +101,7 @@ const DashSidebar = () => {
   const [isSidebarClosed, setSidebarClosed] = useState(true); 
   const isDarkMode = useSelector((state) => state.theme.theme === 'dark');
   const dispatch = useDispatch();
+  const {currentUser} = useSelector(state => state.user);
 
   const toggleSidebar = () => {
     setSidebarClosed(prevState => !prevState); 
@@ -135,9 +136,22 @@ const DashSidebar = () => {
               <NavLink darkMode={isDarkMode}>
                 <Link to='/dashboard?tab=profile' darkMode={isDarkMode} close={isSidebarClosed}>
                   <HiUser className='icon'/>
-                  <span className="text nav-text">Profile</span>
+                  <span className="text nav-text">Profile 
+                    <span className="badge text-white bg-secondary mx-3">{currentUser.isAdmin ? 'Admin' : 'User'}</span>
+                  </span>
                 </Link>
               </NavLink>
+
+              {
+                currentUser.isAdmin && (
+                  <NavLink darkMode={isDarkMode}>
+                    <Link to='/dashboard?tab=post' darkMode={isDarkMode} close={isSidebarClosed}>
+                      <HiDocumentText className='icon'/>
+                      <span className="text nav-text">Posts</span>
+                    </Link>
+                  </NavLink>
+                )
+              }
 
               <NavLink darkMode={isDarkMode}>
                 <Link darkMode={isDarkMode} close={isSidebarClosed}>
