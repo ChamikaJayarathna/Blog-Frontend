@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { Modal } from 'react-bootstrap';
+import { HiOutlineExclamationCircle } from 'react-icons/hi';
 
 const Image = styled.img`
     width: 80px;
@@ -9,13 +11,13 @@ const Image = styled.img`
 `;
 
 
-
 const DashPosts = () => {
 
     const { currentUser } = useSelector((state) => state.user);
     const [userPosts, setUserPosts] = useState([]);
     const [showMore, setShowMore] = useState(true);
-    console.log(userPosts);
+    const [showModal, setShowModal] = useState(false);
+    const [postIdToDelete, setPostIdToDelete] = useState('');
 
     useEffect(() => {
         const fetchPosts = async () => {
@@ -55,7 +57,27 @@ const DashPosts = () => {
         } catch (error) {
             console.log(error.message);
         }
-    }
+    };
+
+    const handleDeletePost = async () => {
+        setShowModal(false);
+        try {
+            const res = await fetch(`/api/post/deletepost/${postIdToDelete}/${currentUser._id}`,{
+                method: 'DELETE',
+            });
+            const data = await res.json();
+            if(!res.ok){
+                console.log(data.message);
+            }else{
+                setUserPosts((prev) => 
+                   prev.filter((post) => post._id !== postIdToDelete)
+                );
+            }
+        } catch (error) {
+            console.log(error.message);
+        }
+
+    };
 
   return (
     <div className='table-responsive mx-md-auto p-4'>
@@ -86,7 +108,10 @@ const DashPosts = () => {
                                 </td>
                                 <td>{post.category}</td>
                                 <td>
-                                    <span className='text-danger'>Delete</span>
+                                    <span onClick={() => {
+                                        setShowModal(true);
+                                        setPostIdToDelete(post._id);
+                                    }} className='text-danger'>Delete</span>
                                 </td>
                                 <td>
                                     <Link className='text-success text-decoration-none' to={`/update-post/${post._id}`}>
@@ -106,6 +131,23 @@ const DashPosts = () => {
         ):(
             <p>You have no posts yets!</p>
         )}
+        <Modal show={showModal} onHide={() => setShowModal(false)} size="md" centered>
+            <Modal.Header closeButton className='border-0' />
+            <Modal.Body>
+            <div className="text-center">
+                <HiOutlineExclamationCircle className='h-25 w-25 text-secondary mb-4 mx-auto'/>
+                <h3 className='mb-5 text-secondary'>Are you sure you want to delete this post?</h3>
+                <div className="d-flex justify-content-center gap-4">
+                <button className='btn btn-danger' onClick={handleDeletePost}>
+                    Yes, I'm sure
+                </button>
+                <button className='btn btn-secondary' onClick={() => setShowModal(false)}>
+                    No, cancle
+                </button>
+                </div>
+            </div>
+            </Modal.Body>
+        </Modal>
     </div>
   )
 }
