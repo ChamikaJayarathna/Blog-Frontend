@@ -14,6 +14,7 @@ const DashPosts = () => {
 
     const { currentUser } = useSelector((state) => state.user);
     const [userPosts, setUserPosts] = useState([]);
+    const [showMore, setShowMore] = useState(true);
     console.log(userPosts);
 
     useEffect(() => {
@@ -25,6 +26,9 @@ const DashPosts = () => {
               setUserPosts(data.posts);
               if (data.posts.length < 9) {
                 setShowMore(false);
+                if(data.posts.length < 9){
+                    setShowMore(false);
+                }
               }
             }
           } catch (error) {
@@ -35,6 +39,23 @@ const DashPosts = () => {
           fetchPosts();
         }
       }, [currentUser._id]);
+
+    const handleShowMore = async () => {
+        const startIndex = userPosts.length;
+        try {
+            const res = await fetch(`/api/post/getposts?userId=${currentUser._id}&startIndex=${startIndex}`);
+            const data = await res.json();
+
+            if(res.ok){
+                setUserPosts((prev) => [...prev, ...data.posts]);
+                if(data.posts.length < 9){
+                    setShowMore(false);
+                }
+            }
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
 
   return (
     <div className='table-responsive mx-md-auto p-4'>
@@ -76,6 +97,11 @@ const DashPosts = () => {
                         </tbody>
                     ))}
                 </table>
+                {
+                    showMore && (
+                        <button onClick={handleShowMore} className='w-100 text-info py-3 border-0 text-center rounded bg-body-secondary'>Show more</button>
+                    )
+                }
             </>
         ):(
             <p>You have no posts yets!</p>
