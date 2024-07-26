@@ -108,22 +108,23 @@ const DashSidebar = () => {
   };
 
   const handleSignout = async () =>{
-    try {
-        const res = await fetch ('/api/user/signout', {
-        method: 'POST',
-        });
-        const data = await res.json();
 
-        if(!res.ok){
+    try {
+      const res = await fetch ('/api/user/signout', {
+        method: 'POST',
+      });
+      const data = await res.json();
+
+      if(!res.ok){
         console.log(data.message);
-        }else{
+      }else{
         dispatch(signoutSuccess());
-        }
+      }
 
     } catch (error) {
-        console.log(error.message);
+      console.log(error.message);
     }
-};
+  };
 
   return (
     <div>
@@ -155,8 +156,8 @@ const DashSidebar = () => {
 
               <NavLink darkMode={isDarkMode}>
                 <Link darkMode={isDarkMode} close={isSidebarClosed}>
-                  <HiArrowSmRight className='icon'/>
-                  <span onClick={handleSignout} className="text nav-text">Sign Out</span>
+                  <HiArrowSmRight onClick={handleSignout}  className='icon'/>
+                  <span className="text nav-text">Sign Out</span>
                 </Link>
               </NavLink>
 
