@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import CallToAction from '../components/CallToAction';
 
 const Spinner = styled.div`
     height: 3rem;
@@ -101,6 +102,11 @@ const PostPage = () => {
             <span>{post && (post.content.length / 1000).toFixed(0)} mins read</span>
         </div>
         <Content dangerouslySetInnerHTML={{ __html: post && post.content }} className='p-3 max-auto w-100'></Content>
+
+        {/* ------------------ */}
+        <div className="mx-auto w-100" style={{maxWidth: '1024px'}}>
+            <CallToAction/>
+        </div>
     </Main>
   )
 }
