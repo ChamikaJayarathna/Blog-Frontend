@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import CallToAction from '../components/CallToAction';
+import CommentSection from '../components/CommentSection';
 
 const Spinner = styled.div`
     height: 3rem;
@@ -107,6 +108,10 @@ const PostPage = () => {
         <div className="mx-auto w-100" style={{maxWidth: '1024px'}}>
             <CallToAction/>
         </div>
+
+        {/* ------------------ */}
+        <CommentSection postId={post._id}/>
+
     </Main>
   )
 }
