@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link as RouterLink } from 'react-router-dom';
-import { HiArrowSmRight, HiDocumentText, HiOutlineUserGroup, HiUser } from 'react-icons/hi';
+import { HiAnnotation, HiArrowSmRight, HiDocumentText, HiOutlineUserGroup, HiUser } from 'react-icons/hi';
 import { IoIosArrowForward } from "react-icons/io";
 import { useSelector, useDispatch } from 'react-redux';
 import { signoutSuccess } from '../redux/user/userSlice';
@@ -160,6 +160,17 @@ const DashSidebar = () => {
                     <Link to='/dashboard?tab=users' darkMode={isDarkMode} close={isSidebarClosed}>
                       <HiOutlineUserGroup className='icon'/>
                       <span className="text nav-text">Users</span>
+                    </Link>
+                  </NavLink>
+                )
+              }
+
+              {
+                currentUser.isAdmin && (
+                  <NavLink darkMode={isDarkMode}>
+                    <Link to='/dashboard?tab=comments' darkMode={isDarkMode} close={isSidebarClosed}>
+                      <HiAnnotation className='icon'/>
+                      <span className="text nav-text">Comments</span>
                     </Link>
                   </NavLink>
                 )
