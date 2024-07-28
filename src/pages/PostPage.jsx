@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import CallToAction from '../components/CallToAction';
 import CommentSection from '../components/CommentSection';
+import PostCard from '../components/PostCard';
 
 const Spinner = styled.div`
     height: 3rem;
@@ -58,8 +59,7 @@ const PostPage = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
     const [post, setPost] = useState(null);
-
-
+    const [recentPosts, setRecentPosts] = useState(null);
 
     useEffect(() => {
         const fetchPost = async () => {
@@ -84,6 +84,23 @@ const PostPage = () => {
         };
         fetchPost();
     }, [postSlug]);
+
+    useEffect(() => {
+
+        try {
+            const fetchRecentPosts = async () => {
+                const res = await fetch(`/api/post/getposts?limit=3`);
+                const data = await res.json();
+                if(res.ok){
+                    setRecentPosts(data.posts);
+                }
+            }
+            fetchRecentPosts();
+        } catch (error) {
+            console.log(error.message);
+        }
+
+    },[]);
 
     if(loading) return (
         <div className="d-flex justify-content-center align-items-center min-vh-100">
@@ -111,6 +128,18 @@ const PostPage = () => {
 
         {/* ------------------ */}
         <CommentSection postId={post._id}/>
+
+
+        {/* ------------------ */}
+        <div className="d-flex flex-column justify-content-center align-items-center mb-3">
+            <h1 className='mt-5 fs-2'>Recent articles</h1>
+            <div className="d-flex flex-wrap gap-4 mt-5 ">
+                {
+                    recentPosts && 
+                    recentPosts.map((post) => <PostCard key={post._id} post={post}/>)
+                }
+            </div>
+        </div>
 
     </Main>
   )
