@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { Modal } from 'react-bootstrap';
 import Comment from '../components/Comment';
+import { HiOutlineExclamationCircle } from 'react-icons/hi';
 
 const Main = styled.div`
     max-width: 600px;
@@ -19,9 +21,10 @@ const CommentSection = ({postId}) => {
     const [comment, setComment] = useState('');
     const [commentError, setCommentError] = useState(null);
     const [comments, setComments] = useState([]);
+    const [showModal, setShowModal] = useState(false);
+    const [commentToDelete, setCommentToDelete] = useState(null);
     const navigate = useNavigate();
 
-    console.log(comments);  
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -99,6 +102,25 @@ const CommentSection = ({postId}) => {
         );
     };
 
+    const handleDelete = async (commentId) => {
+        setShowModal(false);
+        try {
+          if (!currentUser) {
+            navigate('/sign-in');
+            return;
+          }
+          const res = await fetch(`/api/comment/deleteComment/${commentId}`, {
+            method: 'DELETE',
+          });
+          if (res.ok) {
+            const data = await res.json();
+            setComments(comments.filter((comment) => comment._id !== commentId));
+          }
+        } catch (error) {
+          console.log(error.message);
+        }
+      };
+
   return (
     <Main className='mx-auto w-100 p-3'>
         {
@@ -147,13 +169,33 @@ const CommentSection = ({postId}) => {
                 </div>
                 {
                     comments.map(comment =>(
-                        <Comment key={comment._id} comment={comment} onLike={handleLike} onEdit={handleEdit}/>
+                        <Comment key={comment._id} comment={comment} onLike={handleLike} onEdit={handleEdit} onDelete={(commentId) => {
+                            setShowModal(true);
+                            setCommentToDelete(commentId);
+                        }}/>
                     ))
                 }
             </>
         )}
+        <Modal show={showModal} onHide={() => setShowModal(false)} size="md" centered>
+            <Modal.Header closeButton className='border-0' />
+            <Modal.Body>
+            <div className="text-center">
+                <HiOutlineExclamationCircle className='h-25 w-25 text-secondary mb-4 mx-auto'/>
+                <h3 className='mb-5 text-secondary'>Are you sure you want to delete this comment?</h3>
+                <div className="d-flex justify-content-center gap-4">
+                <button className='btn btn-danger' onClick={() => handleDelete(commentToDelete)}>
+                    Yes, I'm sure
+                </button>
+                <button className='btn btn-secondary' onClick={() => setShowModal(false)}>
+                    No, cancle
+                </button>
+                </div>
+            </div>
+            </Modal.Body>
+        </Modal>
     </Main>
-  )
+  );
 }
 
 export default CommentSection;

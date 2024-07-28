@@ -35,7 +35,15 @@ const ButtonEdit = styled.button`
     }
 `;
 
-const Comment = ({comment, onLike, onEdit}) => {
+const ButtonDelete = styled.button`
+    background: none;
+
+    &:hover{
+        color: #ef233c !important;
+    }
+`;
+
+const Comment = ({comment, onLike, onEdit, onDelete}) => {
 
     const [user, setUser] = useState({});
     const [isEditing, setIsEditing] = useState(false);
@@ -121,7 +129,11 @@ const Comment = ({comment, onLike, onEdit}) => {
                             </p>
                             {
                                 currentUser && (currentUser._id === comment.userId || currentUser.isAdmin) && (
-                                    <ButtonEdit type="button" className='text-secondary border-0 mt-1 mb-0' onClick={handleEdit}>Edit</ButtonEdit>
+                                    <>
+                                        <ButtonEdit type="button" className='text-secondary border-0 mt-1 mb-0' onClick={handleEdit}>Edit</ButtonEdit>
+
+                                        <ButtonDelete type="button" className='text-secondary border-0 mt-1 mb-0' onClick={() => onDelete(comment._id)}>Delete</ButtonDelete>
+                                    </>
                                 )
                             }
                         </div>
