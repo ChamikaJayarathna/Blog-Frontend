@@ -131,9 +131,9 @@ const PostPage = () => {
 
 
         {/* ------------------ */}
-        <div className="d-flex flex-column justify-content-center align-items-center mb-3">
+        <div className="d-flex flex-column justify-content-center align-items-center  mb-3">
             <h1 className='mt-5 fs-2'>Recent articles</h1>
-            <div className="d-flex flex-wrap gap-4 mt-5 ">
+            <div className="d-flex flex-wrap gap-4 mt-5">
                 {
                     recentPosts && 
                     recentPosts.map((post) => <PostCard key={post._id} post={post}/>)
