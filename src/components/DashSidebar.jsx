@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link as RouterLink } from 'react-router-dom';
-import { HiAnnotation, HiArrowSmRight, HiDocumentText, HiOutlineUserGroup, HiUser } from 'react-icons/hi';
+import { HiAnnotation, HiArrowSmRight, HiChartPie, HiDocumentText, HiOutlineUserGroup, HiUser } from 'react-icons/hi';
 import { IoIosArrowForward } from "react-icons/io";
 import { useSelector, useDispatch } from 'react-redux';
 import { signoutSuccess } from '../redux/user/userSlice';
@@ -133,6 +133,17 @@ const DashSidebar = () => {
           <ToggleButton close={isSidebarClosed} darkMode={isDarkMode} onClick={toggleSidebar} />
           <MenuBar>
             <MenuLinks>
+
+            {
+                currentUser.isAdmin && (
+                  <NavLink darkMode={isDarkMode}>
+                    <Link to='/dashboard?tab=dash' darkMode={isDarkMode} close={isSidebarClosed}>
+                      <HiChartPie className='icon'/>
+                      <span className="text nav-text">Dashboard</span>
+                    </Link>
+                  </NavLink>
+                )
+              }
 
               <NavLink darkMode={isDarkMode}>
                 <Link to='/dashboard?tab=profile' darkMode={isDarkMode} close={isSidebarClosed}>
