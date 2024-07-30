@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import PostCard from '../components/PostCard';
+// import PostCard from '../components/PostCard';
+import BlogPosts from '../components/BlogPosts';
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
@@ -14,16 +15,35 @@ const Home = () => {
   }, []);
 
   return (
-    <div>
-      <div className="d-flex flex-wrap gap-4 mt-5">
+      <div>
+         <div className="container-fluid text-center  px-5 py-5">
+
+            {posts && posts.length > 0 && (
+
+                posts.map((post) => (
+                  <BlogPosts key={post._id} post={post} />
+
+                ))
+
+            )}
+
+        </div>
+    </div>
+
+  );
+};
+
+export default Home;
+
+
+
+
+
+
+{/* <div className="d-flex flex-wrap gap-4 mt-5">
         {posts && posts.length > 0 && (
           posts.map((post) => (
             <PostCard key={post._id} post={post} />
           ))
         )}
-      </div>
-    </div>
-  );
-};
-
-export default Home;
+</div> */}
