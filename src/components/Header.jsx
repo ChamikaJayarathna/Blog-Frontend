@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Dropdown, Image } from 'react-bootstrap'
 import styled from 'styled-components';
 import { FaSearch, FaMoon, FaSun, FaBars } from 'react-icons/fa';
@@ -187,10 +187,23 @@ const DropdownHeader = styled.div`
 
 const Header = () => {
     const [isOpen, setIsOpen] = useState(false);
-
     const { currentUser } = useSelector((state) => state.user);
     const { theme } = useSelector((state) => state.theme);
     const dispatch = useDispatch();
+    const location = useLocation();
+    const navigate = useNavigate();
+    const [searchTerm, setSearchTerm] = useState('');
+
+    useEffect(() => {
+        const urlParams = new URLSearchParams(location.search);
+        const searchTermFromUrl = urlParams.get('searchTerm');
+        if(searchTermFromUrl){
+            setSearchTerm(searchTermFromUrl);        
+        }
+
+    },[location.search]);
+
+
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
@@ -214,16 +227,24 @@ const Header = () => {
         }
     };
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const urlParams = new URLSearchParams(location.search);
+        urlParams.set('searchTerm', searchTerm);
+        const searchQuery = urlParams.toString();
+        navigate(`/search?${searchQuery}`);
+    };
+
     return (
         <HeaderContainer>
             <NavBar theme={theme}>
                 <Container className="container" isOpen={isOpen} theme={theme}>
                     <div className="logo">Chamika</div>
 
-                    <form action="">
+                    <form onSubmit={handleSubmit}>
                         <div className="search-box">
                             <InputWrapper className="input-wrapper">
-                                <input type="text" name="search" id="search" className='search' placeholder='Search...' />
+                                <input type="text" name="search" id="search" className='search' placeholder='Search...' value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}/>
                                 <button><FaSearch/></button>
                             </InputWrapper>
                         </div>
