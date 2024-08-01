@@ -16,7 +16,7 @@ const Home = () => {
 
   return (
       <div>
-         <div className="container-fluid text-center  px-5 py-5">
+         <div className="container-fluid text-center my-5 w-100">
 
             {posts && posts.length > 0 && (
 

@@ -15,10 +15,6 @@ const Main = styled.main`
     max-width: 72rem;
 `;
 
-const Title = styled.h1`
-    max-width: 42rem;
-`;
-
 const Image = styled.img`
     max-height: 600px;
     object-fit: cover;
@@ -110,16 +106,26 @@ const PostPage = () => {
 
   return (
     <Main className='p-3 d-flex flex-column mx-auto min-vh-100'>
-        <Title className='display-5 mt-4 p-3 text-center mx-auto'>{post && post.title }</Title>
+
+    <div className="card my-3">
+
+        <h1 className='display-6 mt-4 px-4 text-start w-100'>{post && post.title }</h1>
         <Link to={`/search?category=${post && post.category}`} className='align-self-center mt-3'>
             <button type="button" className='btn btn-light rounded-pill'>{ post && post.category}</button>
         </Link>
-        <Image src={post && post.image} alt={post && post.title} className='mt-4 w-100'/>
-        <div className="d-flex justify-content-between mt-3 pb-2 border-bottom border-secondary mx-auto w-100">
+
+
+        <div className="d-flex justify-content-between mt-3 pb-2 border-bottom border-secondary mx-auto px-4 w-100">
             <span>{post && new Date(post.createdAt).toLocaleDateString()}</span>
             <span>{post && (post.content.length / 1000).toFixed(0)} mins read</span>
         </div>
-        <Content dangerouslySetInnerHTML={{ __html: post && post.content }} className='p-3 max-auto w-100'></Content>
+        <Image src={post && post.images[1]} alt={post && post.title} className='mt-4 p-5 card-img-top'/>
+
+        <div className="card-body">
+            <Content dangerouslySetInnerHTML={{ __html: post && post.content }} className='p-3 max-auto w-100'></Content>
+        </div>
+
+    </div>
 
         {/* ------------------ */}
         <div className="mx-auto w-100" style={{maxWidth: '1024px'}}>
@@ -146,3 +152,14 @@ const PostPage = () => {
 }
 
 export default PostPage;
+
+
+
+// <div className="card">
+//     <img src={post.images[0]} className="card-img-top" alt="..." />
+//     <div className="card-body">
+//         <h1 className="card-title text-start fw-semibold display-6" style={{ fontFamily: 'Times New Roman, Times, serif' }}>{post.title}</h1>
+//         {/* <p className="card-text">Some quick example text to build on the card title and make </p>
+//         <span className='fst-italic fs-6 mb-3'>{post.category}</span> */}
+//     </div>
+// </div>
