@@ -37,7 +37,7 @@ const App = () => {
           <Route path='/projects' element={<Projects/>}/>
           <Route path='/post/:postSlug' element={<PostPage/>}/>
         </Routes>
-      <Footer/>
+      {/* <Footer/> */}
     </BrowserRouter>
   )
 }

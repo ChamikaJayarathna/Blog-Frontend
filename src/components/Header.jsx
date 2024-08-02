@@ -1,163 +1,219 @@
-import React, { useEffect, useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Dropdown, Image } from 'react-bootstrap'
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { IoSearch } from "react-icons/io5";
+import { RxCross1 } from "react-icons/rx";
+import { FaMoon, FaSun } from 'react-icons/fa';
+import { IoMdMenu } from "react-icons/io";
 import styled from 'styled-components';
-import { FaSearch, FaMoon, FaSun, FaBars } from 'react-icons/fa';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toggleTheme } from '../redux/theme/themeSlice';
 import { signoutSuccess } from '../redux/user/userSlice';
+import { Dropdown, Image } from 'react-bootstrap';
 
-const HeaderContainer = styled.header`
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-`;
 
-const NavBar = styled.nav`
-    background-color: ${({ theme }) => theme === 'dark' ? '#0F172A' : '#E4ECFA'};
-    color: #4D61D1;
-    height: 90px;
-    box-shadow: 0px 2px 9px -5px rgba(0,0,0,0.75);
-`;
-
-const Container = styled.div`
+const HeaderStyle = styled.header`
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background-color: #ffffff;
+    padding: 20px 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 100%;
-    max-width: 1500px;
-    margin: 0 auto;
-    padding: 0 30px;
+    z-index: 100;
 
-    .logo{
-        font-size: x-large;
-        font-weight: bold;
-    }
-
-    ul{
-        list-style-type: none;
-    }
-
-    .nav{
+    &.open .navigation {
+        top: 80px;
+        opacity: 1;
+        visibility: visible;
+        left: 0;
         display: flex;
-        align-items: center;
-
-        @media (max-width: 640px) {
-            display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};
-            position: absolute;
-            top: 90px;
-            left: 0;
-            width: 100%;
-            background-color: ${({ theme }) => theme === 'dark' ? '#0F172A' : '#E4ECFA'};
-            box-shadow: 0px 2px 9px -5px rgba(0,0,0,0.75);
-        }
-    }
-
-    .nav li{
-        margin-left: 10px;
-
-        @media (max-width: 640px) {
-            padding: 10px 0;
-            text-align: center;
-            margin-left: 0;
-        }
-    }
-
-    .search-box{
-        display: flex;
-        align-items: center;
-
-        /* @media (max-width: 640px) {
-            display: none;
-        } */
-    }
-
-    .hamburger{
-        display: none;
-        font-size: 25px;
-        cursor: pointer;
-        color: ${({ theme }) => theme === 'dark' ? '#FFFFFF' : '#8A8694'};
-
-        @media (max-width: 640px) {
-            display: block;
-        }
-    }
-
-    button{
-        padding: 8px;
-        border: none;
-        background: none;
-    }
-`;
-
-const StyledLink = styled(Link)`
-    color: ${({ theme }) => theme === 'dark' ? '#FFFFFF' : '#8A8694'};
-    text-decoration: none;
-    font-size: 16px;
-    font-weight: bold;
-
-    &:hover{
-        color: #4D61D1;
-    }
-`;
-
-const InputWrapper = styled.div`
-    position: relative;
-    width: 100%;
-
-    .search{
+        flex-direction: column;
+        background-color: #ffffff;
         width: 100%;
-        padding: 9px 40px;
-        border: none;
-        border-radius: 5px;
+        height: calc(100vh - 80px);
+        padding: 40px;
+        border-top: 1px solid rgba(0, 0, 0, 0.5);
+    }
+`;
+
+const LeftSide = styled.div`
+    display: flex;
+    align-items: center;
+
+    ul {
+        display: flex;
+        gap: 20px;
+        margin: 0;
+        padding: 0;
     }
 
-    button{
-        position: absolute;
-        color: #8A8694;
-        right: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-        background: none;
-        border: none;
+    ul li {
+        list-style: none;
+    }
+
+    ul li a {
+        position: relative;
+        text-decoration: none;
+        font-size: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        color: #333333;
+    }
+
+    @media (max-width: 576px){
+        .navigation{
+            position: absolute;
+            opacity: 0;
+            visibility: hidden;
+            left: 100%;
+
+            &.open {
+                top: 80px;
+                opacity: 1;
+                visibility: visible;
+                left: 0;
+                display: flex;
+                flex-direction: column;
+                background-color: #ffffff;
+                width: 100%;
+                height: calc(100vh - 80px);
+                padding: 40px;
+                border-top: 1px solid rgba(0, 0, 0, 0.5);
+            }
+        }
+    }
+`;
+
+const Logo = styled(Link)`
+    color: #333333;
+    text-decoration: none;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-right: 40px;
+`;
+
+const RightSide = styled.div`
+    display: flex;
+    align-items: center;
+
+    .menuToggle {
+        display: none;
+    }
+
+    @media (max-width: 576px){
+        .menuToggle {
+            display: block;
+            font-size: 3rem;
+            cursor: pointer;
+            color: #333333;
+        }
+    }
+`;
+
+const SearchWarpper = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    @media (max-width: 576px){
+        .searchBtn{
+            left: 0;
+        }
+    }
+`;
+
+const Search = styled.div`
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    .icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        color: #333333;
+    }
+
+    .searchBtn {
+        display: ${props => (props.active ? 'none' : 'block')};
+    }
+
+    .closeBtn {
+        display: ${props => (props.active ? 'block' : 'none')};
+        font-size: 2rem;
+        color: #333333;
+        transition: opacity 0.5s, transform 0.5s;
+        opacity: ${props => (props.active ? '1' : '0')};
+        transform: ${props => (props.active ? 'scale(1)' : 'scale(0)')};
         cursor: pointer;
+    }
+`;
+
+
+const SearchBox = styled.div`
+    position: absolute;
+    right: ${props => (props.active ? '17%' : '-100%')};
+    width: 58%; 
+    height: 50px;
+    display: flex;
+    background-color: #F1F1F1;
+    border-radius: 50px;
+    align-items: center;
+    justify-content: center;
+    transition: right 0.6s ease-in-out;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    z-index: -100;
+
+    input {
+        width: 100%;
+        height: 100%;
+        border: none;
+        outline: none;
+        color: #333333;
+        padding: 0 25px;
+        background-color: #F1F1F1;
+        border-radius: 30px; 
+        transition: background-color 0.3s, border 0.3s;
+
+        &:focus {
+            background-color: #e0e0e0;
+            border: 2px solid #92C1FF;
+        }
     }
 `;
 
 const Icon = styled.div`
-    .icon-container{
-        display: flex;
-        align-items: center;
-    }
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-right: 40px;
 
     .sun-moon{
-        color: ${({ theme }) => theme === 'dark' ? '#FFFFFF' : '#8A8694'};
-        font-size: 25px;
-        margin-right: 10px;
+        border: none;
+        background: none;
+        font-size: 2rem;
+        color: #767676;
+        margin-left: 15px;
     }
 
     .signIn{
-        font-size: 14px;
-        color: #ffffff;
         background: none;
-        border: 2px solid transparent;
-        padding: 5px 10px;
-        border-radius: 10px;
-        position: relative;
-        z-index: 1;
-        background: linear-gradient(to right, #ff6b6b, #f06595, #00b4d8, #0077b6);
-    }
+        padding: 10px 20px;
+        border-radius: 20px;
+        border: 1.5px solid #333333;
 
-    .signIn::before{
-        content: '';
-        position: absolute;
-        top: -2px;
-        left: -2px;
-        right: -2px;
-        bottom: -2px; 
-        border-radius: 10px;
-        background: linear-gradient(to left, #ff6b6b, #f06595, #00b4d8, #0077b6);
-        z-index: -1;
+        &:hover{
+            background-color: #333333;
+            color: #ffffff;
+        }
     }
 `;
 
@@ -186,40 +242,32 @@ const DropdownHeader = styled.div`
 `;
 
 const Header = () => {
-    const [isOpen, setIsOpen] = useState(false);
-    const { currentUser } = useSelector((state) => state.user);
-    const { theme } = useSelector((state) => state.theme);
+    const [isSearchActive, setIsSearchActive] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const theme = useSelector((state) => state.theme.theme);
     const dispatch = useDispatch();
-    const location = useLocation();
-    const navigate = useNavigate();
-    const [searchTerm, setSearchTerm] = useState('');
+    const currentUser = useSelector((state) => state.user.currentUser); 
 
-    useEffect(() => {
-        const urlParams = new URLSearchParams(location.search);
-        const searchTermFromUrl = urlParams.get('searchTerm');
-        if(searchTermFromUrl){
-            setSearchTerm(searchTermFromUrl);        
-        }
-
-    },[location.search]);
-
-
-
-    const toggleMenu = () => {
-        setIsOpen(!isOpen);
+    const handleSearchInput = () => {
+        setIsSearchActive(!isSearchActive);
     };
 
-    const handleSignout = async () =>{
+    const handleMenuToggle = () => {
+        setIsMenuOpen(!isMenuOpen);
+        setIsSearchActive(false);
+    };
+
+    const handleSignout = async () => {
         try {
-            const res = await fetch ('/api/user/signout', {
-            method: 'POST',
+            const res = await fetch('/api/user/signout', {
+                method: 'POST',
             });
             const data = await res.json();
 
-            if(!res.ok){
-            console.log(data.message);
-            }else{
-            dispatch(signoutSuccess());
+            if (!res.ok) {
+                console.log(data.message);
+            } else {
+                dispatch(signoutSuccess());
             }
 
         } catch (error) {
@@ -227,73 +275,64 @@ const Header = () => {
         }
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const urlParams = new URLSearchParams(location.search);
-        urlParams.set('searchTerm', searchTerm);
-        const searchQuery = urlParams.toString();
-        navigate(`/search?${searchQuery}`);
-    };
-
     return (
-        <HeaderContainer>
-            <NavBar theme={theme}>
-                <Container className="container" isOpen={isOpen} theme={theme}>
-                    <div className="logo">Chamika</div>
+        <HeaderStyle>
+            <LeftSide>
+                <Logo to="/">Logo</Logo>
+                <ul className={`navigation ${isMenuOpen ? 'open' : ''}`}>
+                    <li><Link to="/">Home</Link></li>
+                    <li><Link to="/about">About</Link></li>
+                    <li><Link to="/police">Police</Link></li>
+                </ul>
+            </LeftSide>
 
-                    <form onSubmit={handleSubmit}>
-                        <div className="search-box">
-                            <InputWrapper className="input-wrapper">
-                                <input type="text" name="search" id="search" className='search' placeholder='Search...' value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}/>
-                                <button><FaSearch/></button>
-                            </InputWrapper>
-                        </div>
-                    </form>
+            <RightSide>
+                <SearchWarpper className="searchWarpper">
+                    <Search onClick={handleSearchInput}>
+                        <span className="icon">
+                            <IoSearch className="searchBtn" />
+                            <RxCross1 className="closeBtn"/>
+                        </span>
+                    </Search>
 
-                    <div className="nav">
-                        <li><StyledLink to='/' theme={theme}>Home</StyledLink></li>
-                        <li><StyledLink to='/about' theme={theme}>About</StyledLink></li>
-                        <li><StyledLink to='/projects' theme={theme}>Projects</StyledLink></li>
-                    </div>
+                    <SearchBox active={isSearchActive}>
+                        <input type="text" placeholder="Search here..."/>
+                    </SearchBox>
+                </SearchWarpper>
 
-                    <Icon className="icon" theme={theme}>
-                        <div className="icon-container">
-                            <button className='sun-moon' onClick={() => dispatch(toggleTheme()) }>
-                                { theme === 'light' ? <FaMoon/> : <FaSun/> }
-                            </button>
+                
 
-                            {currentUser ? (
-                            <Dropdown>
-                                <Dropdown.Toggle as="div" id="dropdown-custom-components">
-                                    <Avatar src={currentUser.profilePicture} alt="user" />
-                                </Dropdown.Toggle>
-                                
-                                <Dropdown.Menu>
-                                    <DropdownHeader>
-                                        <span className="username">@{currentUser.username}</span>
-                                        <span className="email">{currentUser.email}</span>
-                                    </DropdownHeader>
-
-                                    <Dropdown.Item as={Link} to='/dashboard?tab=profile'>Profile</Dropdown.Item>
-                                    <Dropdown.Item onClick={handleSignout}>Sign Out</Dropdown.Item>
-                                </Dropdown.Menu>
-                            </Dropdown>
-                            ):
-                            (
-                                <Link to='/sign-in'>
-                                    <button className='signIn'>Sign In</button>
-                                </Link>
-                            )}
-                        </div>
-                    </Icon>
-
-                    <button theme={theme} className="hamburger" onClick={toggleMenu}>
-                        <FaBars />
+                <Icon>
+                    <button className='sun-moon' onClick={() => dispatch(toggleTheme())}>
+                        {theme === 'light' ? <FaSun /> : <FaMoon />}
                     </button>
-                </Container>
-            </NavBar>
-        </HeaderContainer>
-    )
-}
+
+                    {currentUser ? (
+                        <Dropdown>
+                            <Dropdown.Toggle as="div" id="dropdown-custom-components">
+                                <Avatar src={currentUser.profilePicture} alt="user" />
+                            </Dropdown.Toggle>
+                            
+                            <Dropdown.Menu>
+                                <DropdownHeader>
+                                    <span className="username">@{currentUser.username}</span>
+                                    <span className="email">{currentUser.email}</span>
+                                </DropdownHeader>
+
+                                <Dropdown.Item as={Link} to='/dashboard?tab=profile'>Profile</Dropdown.Item>
+                                <Dropdown.Item onClick={handleSignout}>Sign Out</Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    ) : (
+                        <Link to='/sign-in' className='signInLink'>
+                            <button className='signIn'>Sign In</button>
+                        </Link>
+                    )}
+                </Icon>
+                <IoMdMenu className='menuToggle' onClick={handleMenuToggle} />
+            </RightSide>
+        </HeaderStyle>
+    );
+};
 
 export default Header;
