@@ -13,6 +13,7 @@ import { Link } from 'react-router-dom';
 const Card = styled.div`
   width: 700px;
   padding: 2rem;
+  margin-top: 120px;
   border-radius: 0.5rem;
   box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
 

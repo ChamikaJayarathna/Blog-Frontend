@@ -10,7 +10,6 @@ import { toggleTheme } from '../redux/theme/themeSlice';
 import { signoutSuccess } from '../redux/user/userSlice';
 import { Dropdown, Image } from 'react-bootstrap';
 
-
 const HeaderStyle = styled.header`
     position: fixed;
     top: 0;
@@ -221,6 +220,10 @@ const Avatar = styled(Image)`
   border-radius: 50%;
   width: 40px;
   height: 40px;
+
+  &:hover{
+    
+  }
 `;
 
 const DropdownHeader = styled.div`
@@ -310,7 +313,7 @@ const Header = () => {
                     {currentUser ? (
                         <Dropdown>
                             <Dropdown.Toggle as="div" id="dropdown-custom-components">
-                                <Avatar src={currentUser.profilePicture} alt="user" />
+                                    <Avatar src={currentUser.profilePicture} alt="user" />
                             </Dropdown.Toggle>
                             
                             <Dropdown.Menu>

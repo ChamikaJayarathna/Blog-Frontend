@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from 'react';
 // import PostCard from '../components/PostCard';
 import BlogPosts from '../components/BlogPosts';
+import styled from 'styled-components';
+
+
+const Blog = styled.div`
+  padding-top: 100px !important;
+`
+
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
@@ -16,7 +23,7 @@ const Home = () => {
 
   return (
       <div>
-         <div className="container-fluid text-center my-5 w-100">
+         <Blog className="container-fluid text-center my-5 w-100">
 
             {posts && posts.length > 0 && (
 
@@ -27,7 +34,7 @@ const Home = () => {
 
             )}
 
-        </div>
+        </Blog>
     </div>
 
   );

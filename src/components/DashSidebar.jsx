@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { signoutSuccess } from '../redux/user/userSlice';
 
 const Container = styled.div`
+  position: fixed;
   height: 100vh;
   background-color: ${(props) => (props.darkMode ? '#18191a' : '#E4E9F7')};
   transition: all 0.5s ease;
@@ -15,6 +16,7 @@ const Container = styled.div`
 const SidebarContainer = styled.nav`
   position: relative;
   left: 0;
+  top: 100px;
   height: 100%;
   width: ${(props) => (props.close ? '88px' : '250px')};
   padding: 10px 14px;
