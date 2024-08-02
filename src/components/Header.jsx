@@ -158,7 +158,7 @@ const Search = styled.div`
 
 const SearchBox = styled.div`
     position: absolute;
-    right: ${props => (props.active ? '17%' : '-100%')};
+    right: ${props => (props.active ? '15%' : '-100%')};
     width: 58%; 
     height: 50px;
     display: flex;
