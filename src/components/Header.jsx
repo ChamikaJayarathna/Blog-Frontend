@@ -285,7 +285,7 @@ const Header = () => {
                 <ul className={`navigation ${isMenuOpen ? 'open' : ''}`}>
                     <li><Link to="/">Home</Link></li>
                     <li><Link to="/about">About</Link></li>
-                    <li><Link to="/police">Police</Link></li>
+                    <li><Link>Contact Us</Link></li>
                 </ul>
             </LeftSide>
 
