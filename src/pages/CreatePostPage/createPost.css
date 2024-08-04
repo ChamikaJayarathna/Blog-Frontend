@@ -74,6 +74,16 @@ form{
     cursor: pointer;
 }
 
+.uploaded-image {
+    width: 100%;
+    max-width: 800px;
+    height: auto;
+    display: block;
+    margin-bottom: 15px;
+    object-fit: contain;
+}
+
+
 
 
 

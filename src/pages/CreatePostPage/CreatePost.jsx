@@ -121,7 +121,7 @@ const CreatePost = () => {
                     </button>
                 </div>
 
-                {imageUploadError && <div className="alert-danger" role="alert">{imageUploadError}</div>}
+                {imageUploadError && <div className="alert-danger " role="alert">{imageUploadError}</div>}
                 {formData.images.length > 0 && (
                     <div>
                         {formData.images.map((url, index) => (
