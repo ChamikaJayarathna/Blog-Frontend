@@ -44,7 +44,7 @@ const PostCard = ({ post }) => {
   return (
     <Main className='w-100'>
         <Link to={`/post/${post.slug}`}>
-            <Image src={post.image} alt="post cover" />
+            <Image src={post.images} alt="post cover" />
         </Link>
         <div className="p-3 d-flex flex-column gap-2">
             <Link to={`/post/${post.slug}`} className='text-decoration-none'>

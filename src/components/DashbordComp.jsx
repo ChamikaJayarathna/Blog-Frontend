@@ -77,7 +77,7 @@ const DashbordComp = () => {
       }, [currentUser]);
 
   return (
-    <div className='p-3 mx-auto'>
+    <div className='p-3 mx-auto' style={{marginTop: '110px'}}>
         <div className="d-flex flex-wrap gap-4 justify-content-center">
             <Card className="d-flex flex-column p-3 gap-4 card shadow-sm rounded-4">
                 <div className="d-flex justify-content-between align-items-center mt-2">

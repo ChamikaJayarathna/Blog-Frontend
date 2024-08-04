@@ -1,0 +1,169 @@
+.create-post-style-container {
+    width: 100%;
+    margin-top: 110px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    text-align: center;
+    padding-bottom: 30px;
+}
+
+form{
+    width: 100%;
+    max-width: 800px;
+}
+
+.create-post-style-title,
+.create-post-style-category-select,
+.create-post-style-react-quill,
+.create-post-style-publish-button {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.create-post-style-title-category{
+    display: flex;
+}
+
+.create-post-style-title{
+    flex: 1;
+    padding: 10px;
+    border-radius: 10px;
+    margin-right: 15px;
+}
+
+.create-post-style-category-select{
+    flex-basis: 150px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.create-post-style-baner-image{
+    margin: 15px 0;
+    padding: 20px;
+    border: 2px dotted black;
+    border-radius: 10px;
+}
+
+.create-post-style-upload-image-button{
+    padding: 10px;
+    border-radius: 10px;
+    margin-left: 250px;
+    background: none;
+}
+
+.create-post-style-upload-image-button:hover{
+    background-color: black;
+    color: white;
+}
+
+.create-post-style-react-quill{
+    height: 300px;
+}
+
+.create-post-style-publish-button{
+    margin-top: 50px;
+    padding: 8px;
+    border-radius: 10px;
+    background: #2A6C04;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* .container {
+    max-width: 600px;
+    width: 100%;
+    padding: 1rem;
+    margin: 0 auto;
+    min-height: 100vh;
+    margin-top: 110px;
+}
+
+.title {
+    width: 70%;
+    max-width: 100%;
+}
+
+.category-select {
+    width: 25%;
+}
+
+.border {
+    border: 3px dotted #57CAF0;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    padding: 1rem;
+    align-content: center;
+}
+
+.react-quill {
+    height: 100%;
+    width: 100%;
+}
+
+.react-quill .ql-editor {
+    font-size: 1.5rem;
+}
+
+.progress-bar-box {
+    width: 50px;
+    height: 50px;
+}
+
+.upload-image-button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+}
+
+.upload-image-button:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+}
+
+.publish-button {
+    background-color: #28a745;
+    color: #fff;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+}
+
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    padding: 1rem;
+    border-radius: 0.25rem;
+} */

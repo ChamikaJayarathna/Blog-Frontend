@@ -100,7 +100,7 @@ const DashPosts = () => {
                                 <td>{new Date(post.updatedAt).toLocaleDateString()}</td>
                                 <td>
                                     <Link to={`/post/${post.slug}`}>
-                                        <Image src={post.image} alt={post.title} className='object-cover bg-secondary-subtle'/>
+                                        <Image src={post.images} alt={post.title} className='object-cover bg-secondary-subtle'/>
                                     </Link>
                                 </td>
                                 <td>

@@ -105,7 +105,7 @@ const PostPage = () => {
     );
 
   return (
-    <Main className='p-3 d-flex flex-column mx-auto min-vh-100'>
+    <Main className='p-3 d-flex flex-column mx-auto min-vh-100 mt-5'>
 
     <div className="card my-3">
 
@@ -119,18 +119,18 @@ const PostPage = () => {
             <span>{post && new Date(post.createdAt).toLocaleDateString()}</span>
             <span>{post && (post.content.length / 1000).toFixed(0)} mins read</span>
         </div>
-        <Image src={post && post.images[1]} alt={post && post.title} className='mt-4 p-5 card-img-top'/>
 
         <div className="card-body">
             <Content dangerouslySetInnerHTML={{ __html: post && post.content }} className='p-3 max-auto w-100'></Content>
         </div>
 
+        <Image src={post && post.images[1]} alt={post && post.title} className='mt-4 p-5 card-img-top'/>
     </div>
 
         {/* ------------------ */}
-        <div className="mx-auto w-100" style={{maxWidth: '1024px'}}>
+        {/* <div className="mx-auto w-100" style={{maxWidth: '1024px'}}>
             <CallToAction/>
-        </div>
+        </div> */}
 
         {/* ------------------ */}
         <CommentSection postId={post._id}/>
@@ -152,14 +152,3 @@ const PostPage = () => {
 }
 
 export default PostPage;
-
-
-
-// <div className="card">
-//     <img src={post.images[0]} className="card-img-top" alt="..." />
-//     <div className="card-body">
-//         <h1 className="card-title text-start fw-semibold display-6" style={{ fontFamily: 'Times New Roman, Times, serif' }}>{post.title}</h1>
-//         {/* <p className="card-text">Some quick example text to build on the card title and make </p>
-//         <span className='fst-italic fs-6 mb-3'>{post.category}</span> */}
-//     </div>
-// </div>

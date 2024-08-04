@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import BlogPosts from '../../components/BlogPostsCom/BlogPosts';
-import './home.css';
+import './homeStyle.css';
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
@@ -15,10 +15,10 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="wrapper">
-      <div className="container">
-        {posts.length > 0 && posts.map((post, index) => (
-          <div key={post._id} className="box">
+    <div className="home-style-wrapper">
+      <div className="home-style-container">
+        {posts.length > 0 && posts.map((post) => (
+          <div key={post._id} className="home-style-box">
             <BlogPosts post={post} />
           </div>
         ))}
