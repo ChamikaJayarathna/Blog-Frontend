@@ -44,30 +44,42 @@ const Header = () => {
     };
 
     return (
-        <header className={`header-comp-header ${isMenuOpen ? 'open' : ''}`}>
-            <div className="left-side">
-                <Link to="/" className="logo">Logo</Link>
-                <ul className={`navigation ${isMenuOpen ? 'open' : ''}`}>
+        <header className={`header-comp-style`}>
+
+            <div className="header-comp-left-side">
+                <Link to="/" className="header-comp-logo">Logo</Link>
+
+                <ul className={`header-comp-navigation ${isMenuOpen ? 'open' : ''}`}>
                     <li><Link to="/">Home</Link></li>
                     <li><Link to="/about">About</Link></li>
                     <li><Link>Contact Us</Link></li>
                 </ul>
             </div>
 
-            <div className="right-side">
-                <div className="search-wrapper">
+            <div className="header-comp-right-side">
+
+
+
+                <div className="header-comp-search-wrapper">
                     <div className={`search ${isSearchActive ? 'active' : ''}`} onClick={handleSearchInput}>
-                        <span className="icon">
+                        <span className="header-comp-icon">
                             <IoSearch className="search-btn" />
                             <RxCross1 className="close-btn" />
                         </span>
                     </div>
+
                     <div className={`search-box ${isSearchActive ? 'active' : ''}`}>
                         <input type="text" placeholder="Search here..." />
                     </div>
                 </div>
 
-                <div className="icon">
+
+
+
+
+
+
+                <div className="header-comp-icon">
                     <button className='sun-moon' onClick={() => dispatch(toggleTheme())}>
                         {theme === 'light' ? <FaSun /> : <FaMoon />}
                     </button>
@@ -92,6 +104,7 @@ const Header = () => {
                         </Link>
                     )}
                 </div>
+
                 <IoMdMenu className='menu-toggle' onClick={handleMenuToggle} />
             </div>
         </header>
