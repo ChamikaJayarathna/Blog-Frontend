@@ -12,7 +12,7 @@ import PrivateRoute from './components/PrivateRoute'
 import OnlyAdminPrivateRoute from './components/OnlyAdminPrivateRoute'
 import CreatePost from './pages/CreatePostPage/CreatePost'
 import UpdatePost from './pages/UpdatePost'
-import PostPage from './pages/PostPage'
+import PostPage from './pages/PostPageView/PostPage'
 import ScrollToTop from './components/ScrollToTop'
 import Search from './pages/Search'
 

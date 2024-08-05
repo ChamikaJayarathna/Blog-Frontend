@@ -80,7 +80,7 @@ const DashPosts = () => {
     };
 
   return (
-    <div className='table-responsive mx-md-auto p-4'>
+    <div className='table-responsive mx-md-auto p-4 mt-5'>
         {currentUser.isAdmin && userPosts.length > 0 ? (
             <>
                 <table className='table table-hover shadow'>
