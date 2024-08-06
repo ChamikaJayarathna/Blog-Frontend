@@ -220,16 +220,5 @@
         border-top: 1px solid rgba(0, 0, 0, 0.5);
     }
 
-    .header-comp-search-wrapper .search-btn {
-        left: 0;
-    }
-
-    .search-box{
-        width: 33%;
-    }
-
-    .search-box.active {
-        right: 45%;
-    }
 }
 
