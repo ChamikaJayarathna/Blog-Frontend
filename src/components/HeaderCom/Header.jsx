@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { IoSearch } from "react-icons/io5";
-import { RxCross1 } from "react-icons/rx";
 import { FaMoon, FaSun } from 'react-icons/fa';
 import { IoMdMenu } from "react-icons/io";
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,19 +9,13 @@ import { signoutSuccess } from '../../redux/user/userSlice';
 import './header.css';
 
 const Header = () => {
-    const [isSearchActive, setIsSearchActive] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const theme = useSelector((state) => state.theme.theme);
     const dispatch = useDispatch();
     const currentUser = useSelector((state) => state.user.currentUser);
 
-    const handleSearchInput = () => {
-        setIsSearchActive(!isSearchActive);
-    };
-
     const handleMenuToggle = () => {
         setIsMenuOpen(!isMenuOpen);
-        setIsSearchActive(false);
     };
 
     const handleSignout = async () => {
@@ -56,28 +49,14 @@ const Header = () => {
                 </ul>
             </div>
 
+            <div className="header-comp-search-wrapper header-comp-icon">
+                <input type="text" className='header-comp-search-bar-input' placeholder="Search here..."/>
+                <button className='header-comp-search-bar-submit'>
+                    <IoSearch className="header-comp-search-btn" />
+                </button>
+            </div>
+
             <div className="header-comp-right-side">
-
-
-
-                <div className="header-comp-search-wrapper">
-                    <div className={`search ${isSearchActive ? 'active' : ''}`} onClick={handleSearchInput}>
-                        <span className="header-comp-icon">
-                            <IoSearch className="search-btn" />
-                            <RxCross1 className="close-btn" />
-                        </span>
-                    </div>
-
-                    <div className={`search-box ${isSearchActive ? 'active' : ''}`}>
-                        <input type="text" placeholder="Search here..." />
-                    </div>
-                </div>
-
-
-
-
-
-
 
                 <div className="header-comp-icon">
                     <button className='sun-moon' onClick={() => dispatch(toggleTheme())}>
