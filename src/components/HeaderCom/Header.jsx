@@ -91,8 +91,10 @@ const Header = () => {
                                     <span className="username">@{currentUser.username}</span><br />
                                     <span className="email">{currentUser.email}</span>
                                 </div>
-                                <Link to='/dashboard?tab=profile' className="dropdown-item">Profile</Link>
-                                <button className="dropdown-item" onClick={handleSignout}>Sign Out</button>
+                                <div className="header-comp-dropdownItem">
+                                    <Link to='/dashboard?tab=profile' className='header-comp-profile'>Profile</Link>
+                                    <button onClick={handleSignout}>Sign Out</button>
+                                </div>
                             </div>
                         </div>
                     ) : (

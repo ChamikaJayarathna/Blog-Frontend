@@ -180,7 +180,6 @@
     cursor: pointer;
 }
 
-
 .header-comp-dropdown-menu{
     position: absolute;
     top: 90px;
@@ -224,6 +223,14 @@
 
 .header-comp-dropdown-header .email{
     font-size: 10px;
+}
+
+.header-comp-dropdownItem{
+    margin: 10px auto;
+}
+
+.header-comp-dropdownItem .header-comp-profile{
+    text-decoration: none;
 }
 
 
