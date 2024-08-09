@@ -187,10 +187,11 @@
     position: absolute;
     top: 90px;
     right: 35px;
-    background-color: #cecece;
-    border-radius: 8px;
+    background-color: #ffffff;
+    border-radius: 16px;
     padding: 10px 20px;
     width: 200px;
+    box-shadow: 0px 2px 10px 0px rgba(0,0,0,0.20);
 }
 
 .header-comp-dropdown-menu::before{
@@ -200,7 +201,7 @@
     right: 20px;
     height: 20px;
     width: 20px;
-    background: #cecece;
+    background: #ffffff;
     transform: rotate(45deg);
 }
 
@@ -218,6 +219,12 @@
     transition: 500ms ease;
 }
 
+.header-comp-dropdown-header {
+    display: flex;
+    flex-direction: column;
+    margin-top: 8px;
+}
+
 .header-comp-dropdown-header .username{
     font-size: 16px;
     font-weight: 500;
@@ -230,17 +237,39 @@
 
 .header-comp-dropdownItem{
     margin: 10px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+
 }
 
 .header-comp-dropdownItem .header-comp-profile{
+    margin-top: 10px;
     text-decoration: none;
+    color: #000000;
+    padding: 8px 8px 8px 0;
 }
+
+.header-comp-dropdownItem .header-comp-sign-out{
+    margin-top: 10px;
+    border: none;
+    background: none;
+    padding: 8px 8px 8px 0;
+}
+
+.header-comp-dropdownItem .header-comp-profile:hover,
+.header-comp-dropdownItem .header-comp-sign-out:hover{
+    background-color: #FAFAFA;
+    width: 100%;
+    border-radius: 5px;
+}
+
 
 
 /* ----------------DropDown---------------- */
 
 
-@media (max-width: 576px) {
+@media screen and (max-width: 576px) {
     
     .header-comp-right-side .menu-toggle {
         display: block;

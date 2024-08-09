@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { IoSearch } from "react-icons/io5";
 import { FaMoon, FaSun } from 'react-icons/fa';
 import { IoMdMenu } from "react-icons/io";
+import { CiUser, CiLogout } from "react-icons/ci";
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleTheme } from '../../redux/theme/themeSlice';
 import { signoutSuccess } from '../../redux/user/userSlice';
@@ -88,12 +89,12 @@ const Header = () => {
 
                             <div className={`header-comp-dropdown-menu ${open ? 'active' : 'inactive'}`}>
                                 <div className="header-comp-dropdown-header">
-                                    <span className="username">@{currentUser.username}</span><br />
+                                    <span className="username">@{currentUser.username}</span>
                                     <span className="email">{currentUser.email}</span>
                                 </div>
                                 <div className="header-comp-dropdownItem">
-                                    <Link to='/dashboard?tab=profile' className='header-comp-profile'>Profile</Link>
-                                    <button onClick={handleSignout}>Sign Out</button>
+                                    <Link to='/dashboard?tab=profile' className='header-comp-profile'><CiUser /> Profile</Link>
+                                    <button onClick={handleSignout} className='header-comp-sign-out'><CiLogout /> Sign Out</button>
                                 </div>
                             </div>
                         </div>
