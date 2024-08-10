@@ -1,9 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { IoSearch } from "react-icons/io5";
-import { FaMoon, FaSun } from 'react-icons/fa';
 import { IoMdMenu } from "react-icons/io";
-import { CiUser, CiLogout } from "react-icons/ci";
+import { FaRegUser } from "react-icons/fa";
+import { TbLogout } from "react-icons/tb";
+import { ImSun } from "react-icons/im";
+import { RiMoonLine } from "react-icons/ri";
+import { FiSearch } from "react-icons/fi";
+import { IoMenu } from "react-icons/io5";
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleTheme } from '../../redux/theme/themeSlice';
 import { signoutSuccess } from '../../redux/user/userSlice';
@@ -57,6 +60,7 @@ const Header = () => {
         }
     };
 
+
     return (
         <header className={`header-comp-style`}>
             <div className="header-comp-left-side">
@@ -68,17 +72,18 @@ const Header = () => {
                 </ul>
             </div>
 
-            <div className="header-comp-search-wrapper header-comp-icon">
+
+            {/* <div className="header-comp-search-wrapper header-comp-icon">
                 <input type="text" className='header-comp-search-bar-input' placeholder="Search here..." />
                 <button className='header-comp-search-bar-submit'>
-                    <IoSearch className="header-comp-search-btn" />
+                    <FiSearch className="header-comp-search-btn"/>
                 </button>
-            </div>
+            </div> */}
 
             <div className="header-comp-right-side">
                 <div className="header-comp-icon">
                     <button className='sun-moon' onClick={() => dispatch(toggleTheme())}>
-                        {theme === 'light' ? <FaSun /> : <FaMoon />}
+                        {theme === 'light' ? <ImSun /> : <RiMoonLine />}
                     </button>
 
                     {currentUser ? (
@@ -93,18 +98,18 @@ const Header = () => {
                                     <span className="email">{currentUser.email}</span>
                                 </div>
                                 <div className="header-comp-dropdownItem">
-                                    <Link to='/dashboard?tab=profile' className='header-comp-profile'><CiUser /> Profile</Link>
-                                    <button onClick={handleSignout} className='header-comp-sign-out'><CiLogout /> Sign Out</button>
+                                    <Link to='/dashboard?tab=profile' className='header-comp-profile'><FaRegUser className='profile-icon'/> Profile</Link>
+                                    <button onClick={handleSignout} className='header-comp-sign-out'><TbLogout className='sign-out-icon'/>Sign Out</button>
                                 </div>
                             </div>
                         </div>
                     ) : (
                         <Link to='/sign-in' className='sign-in-link'>
-                            <button className='sign-in'>Sign In</button>
+                            <FaRegUser className='sign-in'/>
                         </Link>
                     )}
                 </div>
-                <IoMdMenu className='menu-toggle' onClick={handleMenuToggle} />
+                {/* <IoMenu className='menu-toggle' style={{color: '#767676', fontSize: '2.5rem'}} onClick={handleMenuToggle} /> */}
             </div>
         </header>
     );
