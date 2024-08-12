@@ -1,0 +1,35 @@
+.home-style-wrapper {
+  padding-top: 120px !important;
+}
+
+.home-style-container {
+  max-width: 95% ;
+  margin: 20px auto;
+  columns: 4;
+  column-gap: 20px;
+}
+
+.home-style-container .home-style-box {
+  width: 100%;
+  margin-bottom: 10px;
+  break-inside: avoid;
+}
+
+@media (max-width: 1200px) {
+  .home-style-container {
+    width: calc(100% - 40px);
+    columns: 3;
+  }
+}
+
+@media (max-width: 778px) {
+  .home-style-container {
+    columns: 2;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-style-container {
+    columns: 1;
+  }
+}
